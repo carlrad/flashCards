@@ -1,8 +1,6 @@
-<html>
-    <head>
-        <title>Translation</title>
-    </head>
-<body>
+{% extends "layout.html" %}
+
+{% block content %}
 
 {% if translated_word %}
   Means
@@ -11,5 +9,4 @@
     <em>Hello</em>, world!
 {% endif %}
 
-  </body>
-  </html>
+{% endblock %}
