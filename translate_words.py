@@ -1,11 +1,22 @@
 from google.cloud import translate
-# from flask import flask
-# from flask import render_template
-# from flask import request
-#
-# app = Flask(__name__)
-#
-# @app.route("/translate", methods=['POST', 'GET'])
+from flask import Flask
+from flask import render_template
+from flask import request
+
+app = Flask(__name__)
+
+@app.route("/translate", methods=['POST', 'GET'])
+def view_translation():
+    word = request.args.get('word')
+
+    if request.method == "POST":
+        word = request.form['word']
+        translated_word = f"{word}"
+        return render_template("index.html", translated_word=translated_word)
+    else:
+        return render_template("input_form.html")
+
+
 
 # Class to run translation of words via the Google translate API
 class translator(object):
@@ -23,3 +34,6 @@ class translator(object):
 
 text = 'Hallo Welt'
 translator.translate(text)
+
+if __name__ == "__main__":
+    app.run()
