@@ -11,7 +11,7 @@ def view_translation():
 
     if request.method == "POST":
         word = request.form['word']
-        translated_word = f"{word}"
+        translated_word = translator.translate(word)
         return render_template("index.html", translated_word=translated_word)
     else:
         return render_template("input_form.html")
