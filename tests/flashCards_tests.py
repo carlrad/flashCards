@@ -46,3 +46,4 @@ def test_database_interaction():
     query_result = c.execute("SELECT word, translation from translations WHERE id=(SELECT MAX(id) from translations)")
     stored_words = query_result.fetchone()
     assert_equal(stored_words, (word, translated_word))
+    conn.close
