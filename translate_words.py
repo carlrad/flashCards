@@ -32,7 +32,10 @@ class storeTranslation(object):
         c = conn.cursor()
         getId = c.execute("SELECT MAX(id) from translations")
         lastId = getId.fetchone()
-        transId = lastId[0] + 1
+        try:
+            transId = lastId[0] + 1
+        except:
+            transId = 1
         translations = (transId, word, translated_word)
 
         c.execute("INSERT INTO translations VALUES (?, ?, ?)", translations)
