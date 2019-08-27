@@ -15,21 +15,30 @@ def view_translation():
         word = request.form['word']
         translated_word = translator.translate(word)
 
-        conn = sqlite3.connect('data/flashCards.db')
-        c = conn.cursor()
-        getId = c.execute("SELECT MAX(id) from translations")
-        lastId = getId.fetchone()
-        transId = lastId[0] + 1
-        translations = (transId, word, translated_word)
-        c.execute("INSERT INTO translations VALUES (?, ?, ?)", translations)
-        conn.commit()
-        conn.close
+        storeTranslation.store(word,translated_word)
 
         return render_template("index.html", translated_word=translated_word)
     else:
         return render_template("input_form.html")
 
 # Class to write translations to the db
+class storeTranslation(object):
+
+    def __init__(self):
+        self
+
+    def store(word, translated_word):
+        conn = sqlite3.connect('data/flashCards.db')
+        c = conn.cursor()
+        getId = c.execute("SELECT MAX(id) from translations")
+        lastId = getId.fetchone()
+        transId = lastId[0] + 1
+        translations = (transId, word, translated_word)
+
+        c.execute("INSERT INTO translations VALUES (?, ?, ?)", translations)
+        conn.commit()
+        conn.close
+
 
 # Class to run translation of words via the Google translate API
 class translator(object):
