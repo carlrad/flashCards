@@ -1,6 +1,7 @@
 from nose.tools import *
 import sys
 from flashCards import translate_words
+import sqlite3
 
 translate_words.app.config['TESTING'] = True
 web = translate_words.app.test_client()
@@ -29,3 +30,19 @@ def test_index():
     data = {'word': 'Hallo Welt'}
     rv = web.post('/translate', follow_redirects=True, data = data)
     assert_in(b"Hello World", rv.data)
+
+# test the database connection
+def test_database_interaction():
+    # Given a word and translation
+    word = "Wort"
+    translated_word = "Word"
+
+    # When the word and translated word are added to the the database
+    translate_words.storeTranslation.store(word, translated_word)
+
+    # Then the word and translation can be recalled from the database
+    conn = sqlite3.connect('data/flashCards.db')
+    c = conn.cursor()
+    query_result = c.execute("SELECT word, translation from translations WHERE id=(SELECT MAX(id) from translations)")
+    stored_words = query_result.fetchone()
+    assert_equal(stored_words, (word, translated_word))
