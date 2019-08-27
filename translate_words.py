@@ -17,7 +17,11 @@ def view_translation():
 
         conn = sqlite3.connect('data/flashCards.db')
         c = conn.cursor()
-        c.execute("INSERT INTO translations VALUES (2, 'testWord', 'testTranslation')")
+        getId = c.execute("SELECT MAX(id) from translations")
+        lastId = getId.fetchone()
+        transId = lastId[0] + 1
+        translations = (transId, word, translated_word)
+        c.execute("INSERT INTO translations VALUES (?, ?, ?)", translations)
         conn.commit()
         conn.close
 

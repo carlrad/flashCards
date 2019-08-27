@@ -3,3 +3,4 @@
 *.pyc
 .README.md.icloud
 .DS_Store
+*.txt
