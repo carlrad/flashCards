@@ -30,16 +30,25 @@ class storeTranslation(object):
     def store(word, translated_word):
         conn = sqlite3.connect('data/flashCards.db')
         c = conn.cursor()
-        getId = c.execute("SELECT MAX(id) from translations")
-        lastId = getId.fetchone()
-        try:
-            transId = lastId[0] + 1
-        except:
-            transId = 1
-        translations = (transId, word, translated_word)
 
-        c.execute("INSERT INTO translations VALUES (?, ?, ?)", translations)
-        conn.commit()
+        # check if word already exists in data
+        words = c.execute("SELECT word from translations")
+        formatted_word = (word,)
+        if formatted_word in words:
+            pass
+        else:
+            # Generate ID for new entry
+            getId = c.execute("SELECT MAX(id) from translations")
+            lastId = getId.fetchone()
+            try:
+                transId = lastId[0] + 1
+            except:
+                transId = 1
+            translations = (transId, word, translated_word)
+
+            c.execute("INSERT INTO translations VALUES (?, ?, ?)", translations)
+            conn.commit()
+
         conn.close
 
 

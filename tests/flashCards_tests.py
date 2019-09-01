@@ -43,7 +43,21 @@ def test_database_interaction():
     # Then the word and translation can be recalled from the database
     conn = sqlite3.connect('data/flashCards.db')
     c = conn.cursor()
-    query_result = c.execute("SELECT word, translation from translations WHERE id=(SELECT MAX(id) from translations)")
-    stored_words = query_result.fetchone()
-    assert_equal(stored_words, (word, translated_word))
+    query_result = c.execute("SELECT word, translation from translations")
+    stored_words = query_result.fetchall()
+    assert_in((word, translated_word), stored_words)
     conn.close
+
+# test duplicate words are not stored
+def test_duplicates_not_stored():
+    # Given a word which has already been translated and stored
+    conn = sqlite3.connect('data/flashCards.db')
+    c = conn.cursor()
+    duplicate_test_word = "Test Unique"
+    # When the same word is translated and stored
+    translated_word = translate_words.translator.translate(duplicate_test_word)
+    translate_words.storeTranslation.store(duplicate_test_word,translated_word)
+    # Then only one entry for the word is in the database
+    data = c.execute("SELECT word from translations")
+    words = data.fetchall()
+    assert_equal(words.count((duplicate_test_word,)), 1)
