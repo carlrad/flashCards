@@ -23,7 +23,11 @@ def view_translation():
 
 @app.route("/flashCards", methods=['GET'])
 def view_flash_cards():
-    return render_template("flash_card_form.html")
+    flash_card = flashCard.get_random_flashCard()
+    flash_card_word = flash_card[0]
+    flash_card_translation = flash_card[1]
+
+    return render_template("flash_card_form.html", flash_card_word=flash_card_word)
 
 # Class to write translations to the db
 class storeTranslation(object):
@@ -55,6 +59,22 @@ class storeTranslation(object):
 
         conn.close
 
+# Class to get a random word and translation for a flash flashCard
+class flashCard(object):
+
+    def __init__(self):
+        self
+
+    def get_random_flashCard():
+        conn = sqlite3.connect('data/flashCards.db')
+        c = conn.cursor()
+
+        randomID = 2 #replace this with a random generater where max ID doesn't exceed db rows
+
+        data = c.execute("SELECT word, translation FROM translations WHERE id = ?", (randomID,))
+        word_translation_list = data.fetchone()
+
+        return word_translation_list
 
 # Class to run translation of words via the Google translate API
 class translator(object):

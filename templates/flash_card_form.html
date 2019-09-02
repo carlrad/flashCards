@@ -4,4 +4,17 @@
 
 <h1>Click to get a flash card and start learning!</h1>
 
+<form action="/flashCards" method="GET">
+    Get a Flash Card:
+    <br/>
+    <input type="submit">
+</form>
+
+<p>
+{{ flash_card_word }}
+</h2>
+<br/>
+{{ flash_card_translation }}
+</p>
+
 {% endblock %}
