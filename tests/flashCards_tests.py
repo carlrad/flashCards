@@ -27,6 +27,10 @@ def test_index():
     assert_equal(rv.status_code, 200)
     assert_in(b"Enter a word for translation", rv.data)
 
+    rv = web.get('/flashCards', follow_redirects=True)
+    assert_equal(rv.status_code, 200)
+    assert_in(b"Click to get a flash card and start learning!", rv.data)
+
     data = {'word': 'Hallo Welt'}
     rv = web.post('/translate', follow_redirects=True, data = data)
     assert_in(b"Hello World", rv.data)

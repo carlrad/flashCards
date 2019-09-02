@@ -21,6 +21,10 @@ def view_translation():
     else:
         return render_template("input_form.html")
 
+@app.route("/flashCards", methods=['GET'])
+def view_flash_cards():
+    return render_template("flash_card_form.html")
+
 # Class to write translations to the db
 class storeTranslation(object):
 
