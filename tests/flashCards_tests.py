@@ -65,3 +65,25 @@ def test_duplicates_not_stored():
     data = c.execute("SELECT word from translations")
     words = data.fetchall()
     assert_equal(words.count((duplicate_test_word,)), 1)
+    conn.close
+
+# test that a previously translated word is shown on the flashcard page
+def test_word_on_flashcard_page():
+    conn = sqlite3.connect('data/flashCards.db')
+    c = conn.cursor()
+    # Given a user is on the flashcard URL
+    # When the page loads
+    rv = web.get('/flashCards?', follow_redirects=True)
+    # Then a German word is on the page
+    # And the word is in the database
+    c.execute("SELECT word from translations")
+    flash_card_words = c.fetchall()
+    i = 0
+    for word in flash_card_words:
+        flash_card_word = word[0]
+        flash_card_word_bytes = flash_card_word.encode('utf-8')
+        if flash_card_word_bytes in rv.data:
+            i += 1
+        else:
+            pass
+    assert_greater(i, 0)

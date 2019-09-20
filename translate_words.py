@@ -3,6 +3,7 @@ from flask import Flask
 from flask import render_template
 from flask import request
 import sqlite3
+import random
 
 app = Flask(__name__)
 
@@ -24,10 +25,13 @@ def view_translation():
 @app.route("/flashCards", methods=['GET'])
 def view_flash_cards():
     flash_card = flashCard.get_random_flashCard()
-    flash_card_word = flash_card[0]
-    flash_card_translation = flash_card[1]
-
-    return render_template("flash_card_form.html", flash_card_word=flash_card_word)
+    try:
+        flash_card_word = flash_card[0]
+        flash_card_translation = flash_card[1]
+    except:
+        flash_card_word = 'Sorry, no word found'
+        flash_card_translation = 'Sorry, no translation found'
+    return render_template("flash_card_form.html", flash_card_word=flash_card_word, flash_card_translation=flash_card_translation)
 
 # Class to write translations to the db
 class storeTranslation(object):
@@ -69,8 +73,12 @@ class flashCard(object):
         conn = sqlite3.connect('data/flashCards.db')
         c = conn.cursor()
 
-        randomID = 2 #replace this with a random generater where max ID doesn't exceed db rows
+        # Generate a random ID
+        IDdata = c.execute("SELECT MAX(id) FROM translations")
+        maxID = IDdata.fetchone()[0] -1
+        randomID = random.randint(0, maxID)
 
+        # Get the word and translations for that random ID
         data = c.execute("SELECT word, translation FROM translations WHERE id = ?", (randomID,))
         word_translation_list = data.fetchone()
 
