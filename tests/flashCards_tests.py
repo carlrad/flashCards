@@ -96,8 +96,8 @@ def test_word_on_flashcard_page():
         # Given a user is on the flashcard URL
         # When the page loads
         rv = web.get('/flashCards?', follow_redirects=True)
-        # Then a German word is on the page
-        # And the word is in the database
+        # Then translation is on the page
+        # And the translation is in the database
         c.execute("SELECT translation from translations")
         flash_card_translations = c.fetchall()
         i = 0
@@ -109,3 +109,4 @@ def test_word_on_flashcard_page():
             else:
                 pass
         assert_greater(i, 0)
+        # and the translation is accurate
