@@ -87,3 +87,25 @@ def test_word_on_flashcard_page():
         else:
             pass
     assert_greater(i, 0)
+    conn.close
+
+    # test that a translation is shown on the flashcard page
+    def test_translation_on_flashcard_page():
+        conn = sqlite3.connect('data/flashCards.db')
+        c = conn.cursor()
+        # Given a user is on the flashcard URL
+        # When the page loads
+        rv = web.get('/flashCards?', follow_redirects=True)
+        # Then a German word is on the page
+        # And the word is in the database
+        c.execute("SELECT translation from translations")
+        flash_card_translations = c.fetchall()
+        i = 0
+        for translation in flash_card_translations:
+            flash_card_translation = translation[0]
+            flash_card_translation_bytes = flash_card_translation.encode('utf-8')
+            if flash_card_translation_bytes in rv.data:
+                i += 1
+            else:
+                pass
+        assert_greater(i, 0)
