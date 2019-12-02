@@ -2,18 +2,29 @@
 
 {% block content %}
 
-<h1>Click to get a flash card and start learning!</h1>
+<div class="container">
 
-<form action="/flashCards" method="GET">
-    Get another Flash Card:
-    <br/>
-    <input type="submit">
-</form>
-
-<p>
+<h2>Click to see the translation or get a new word and start learning!</h2>
+<div align="center">
+<p class="card" style="visibility: visible;">
 {{ flash_card_word }}
-<br/>
+</p>
+
+<p class="translation" style="visibility: hidden;">
 {{ flash_card_translation }}
 </p>
+</div>
+
+<div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+  <div class="btn-group" role="group" aria-label="First group">
+    <button class="btn btn-primary" onclick="toggle_display()">Show translation</button>
+  </div>
+  <div class="input-group">
+    <form action="/flashCards" method="GET">
+        <input class="btn btn-secondary" type="submit" value="Get another flash card">
+    </form>
+  </div>
+
+</div>
 
 {% endblock %}

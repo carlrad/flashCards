@@ -2,12 +2,16 @@
 
 {% block content %}
 
-<h1>Enter a word for translation</h1>
+<div class="container">
+
+<h2>Enter a word for translation</h2>
 
 <form action="/translate" method="POST">
     Translate: <input type="text" name="word">
     <br/>
-    <input type="submit">
+    <input class="btn btn-primary" type="submit">
 </form>
+
+</div>
 
 {% endblock %}
