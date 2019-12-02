@@ -3,12 +3,13 @@
 {% block content %}
 
 {% if translated_word %}
-  Means
-  <em style="color: green; font-size: 2em;">{{ translated_word }}</em>
+<div class="container">
+  <p>Means <em>{{ translated_word }}</em></p>
 {% else %}
-    <em>Hello</em>, world!
+  <p>please enter a word</p>
 {% endif %}
 <form action="/translate">
-    <input type="submit" value="Return" />
+    <input class="btn btn-primary" type="submit" value="Return" />
 </form>
+</div>
 {% endblock %}
