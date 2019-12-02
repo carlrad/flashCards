@@ -1,4 +1,4 @@
-from google.cloud import translate
+from google.cloud import translate_v2 as translate
 from flask import Flask
 from flask import render_template
 from flask import request
